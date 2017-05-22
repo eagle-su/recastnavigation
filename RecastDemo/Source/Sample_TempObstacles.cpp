@@ -265,7 +265,7 @@ struct RasterizationContext
 	}
 	
 	rcHeightfield* solid;
-	unsigned char* triareas;
+	AreaType* triareas;
 	rcHeightfieldLayerSet* lset;
 	rcCompactHeightfield* chf;
 	TileCacheData tiles[MAX_LAYERS];
@@ -324,7 +324,7 @@ static int rasterizeTileLayers(BuildContext* ctx, InputGeom* geom,
 	// Allocate array that can hold triangle flags.
 	// If you have multiple meshes you need to process, allocate
 	// and array which can hold the max number of triangles you need to process.
-	rc.triareas = new unsigned char[chunkyMesh->maxTrisPerChunk];
+	rc.triareas = new AreaType[chunkyMesh->maxTrisPerChunk];
 	if (!rc.triareas)
 	{
 		ctx->log(RC_LOG_ERROR, "buildNavigation: Out of memory 'm_triareas' (%d).", chunkyMesh->maxTrisPerChunk);

@@ -179,7 +179,6 @@ void rcFreePolyMesh(rcPolyMesh* pmesh)
 	rcFree(pmesh->verts);
 	rcFree(pmesh->polys);
 	rcFree(pmesh->regs);
-	rcFree(pmesh->flags);
 	rcFree(pmesh->areas);
 	rcFree(pmesh);
 }
@@ -263,7 +262,7 @@ static void calcTriNormal(const float* v0, const float* v1, const float* v2, flo
 void rcMarkWalkableTriangles(rcContext* ctx, const float walkableSlopeAngle,
 							 const float* verts, int nv,
 							 const int* tris, int nt,
-							 unsigned char* areas)
+							 AreaType* areas)
 {
 	rcIgnoreUnused(ctx);
 	rcIgnoreUnused(nv);
@@ -278,7 +277,11 @@ void rcMarkWalkableTriangles(rcContext* ctx, const float walkableSlopeAngle,
 		calcTriNormal(&verts[tri[0]*3], &verts[tri[1]*3], &verts[tri[2]*3], norm);
 		// Check if the face is walkable.
 		if (norm[1] > walkableThr)
-			areas[i] = RC_WALKABLE_AREA;
+			areas[i] =  RC_WALKABLE_AREA;
+		else
+		{
+			areas[i] = RC_NULL_AREA;
+		}
 	}
 }
 
@@ -293,7 +296,7 @@ void rcMarkWalkableTriangles(rcContext* ctx, const float walkableSlopeAngle,
 void rcClearUnwalkableTriangles(rcContext* ctx, const float walkableSlopeAngle,
 								const float* verts, int /*nv*/,
 								const int* tris, int nt,
-								unsigned char* areas)
+								AreaType* areas)
 {
 	rcIgnoreUnused(ctx);
 	
@@ -378,13 +381,13 @@ bool rcBuildCompactHeightfield(rcContext* ctx, const int walkableHeight, const i
 		return false;
 	}
 	memset(chf.spans, 0, sizeof(rcCompactSpan)*spanCount);
-	chf.areas = (unsigned char*)rcAlloc(sizeof(unsigned char)*spanCount, RC_ALLOC_PERM);
+	chf.areas = (AreaType*)rcAlloc(sizeof(AreaType)*spanCount, RC_ALLOC_PERM);
 	if (!chf.areas)
 	{
 		ctx->log(RC_LOG_ERROR, "rcBuildCompactHeightfield: Out of memory 'chf.areas' (%d)", spanCount);
 		return false;
 	}
-	memset(chf.areas, RC_NULL_AREA, sizeof(unsigned char)*spanCount);
+	memset(chf.areas, RC_NULL_AREA, sizeof(AreaType)*spanCount);
 	
 	const int MAX_HEIGHT = 0xffff;
 	

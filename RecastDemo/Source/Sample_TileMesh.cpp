@@ -1012,7 +1012,7 @@ unsigned char* Sample_TileMesh::buildTileMesh(const int tx, const int ty, const 
 	// Allocate array that can hold triangle flags.
 	// If you have multiple meshes you need to process, allocate
 	// and array which can hold the max number of triangles you need to process.
-	m_triareas = new unsigned char[chunkyMesh->maxTrisPerChunk];
+	m_triareas = new AreaType[chunkyMesh->maxTrisPerChunk];
 	if (!m_triareas)
 	{
 		m_ctx->log(RC_LOG_ERROR, "buildNavigation: Out of memory 'm_triareas' (%d).", chunkyMesh->maxTrisPerChunk);
@@ -1223,7 +1223,7 @@ unsigned char* Sample_TileMesh::buildTileMesh(const int tx, const int ty, const 
 		}
 		
 		// Update poly flags from areas.
-		for (int i = 0; i < m_pmesh->npolys; ++i)
+		/*for (int i = 0; i < m_pmesh->npolys; ++i)
 		{
 			if (m_pmesh->areas[i] == RC_WALKABLE_AREA)
 				m_pmesh->areas[i] = SAMPLE_POLYAREA_GROUND;
@@ -1242,7 +1242,7 @@ unsigned char* Sample_TileMesh::buildTileMesh(const int tx, const int ty, const 
 			{
 				m_pmesh->flags[i] = SAMPLE_POLYFLAGS_WALK | SAMPLE_POLYFLAGS_DOOR;
 			}
-		}
+		}*/
 		
 		dtNavMeshCreateParams params;
 		memset(&params, 0, sizeof(params));
@@ -1250,7 +1250,6 @@ unsigned char* Sample_TileMesh::buildTileMesh(const int tx, const int ty, const 
 		params.vertCount = m_pmesh->nverts;
 		params.polys = m_pmesh->polys;
 		params.polyAreas = m_pmesh->areas;
-		params.polyFlags = m_pmesh->flags;
 		params.polyCount = m_pmesh->npolys;
 		params.nvp = m_pmesh->nvp;
 		params.detailMeshes = m_dmesh->meshes;

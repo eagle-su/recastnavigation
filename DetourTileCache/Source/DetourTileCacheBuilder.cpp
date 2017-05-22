@@ -90,7 +90,6 @@ void dtFreeTileCachePolyMesh(dtTileCacheAlloc* alloc, dtTileCachePolyMesh* lmesh
 	if (!lmesh) return;
 	alloc->free(lmesh->verts);
 	alloc->free(lmesh->polys);
-	alloc->free(lmesh->flags);
 	alloc->free(lmesh->areas);
 	alloc->free(lmesh);
 }
@@ -1773,23 +1772,17 @@ dtStatus dtBuildTileCachePolyMesh(dtTileCacheAlloc* alloc,
 	if (!mesh.polys)
 		return DT_FAILURE | DT_OUT_OF_MEMORY;
 
-	mesh.areas = (unsigned char*)alloc->alloc(sizeof(unsigned char)*maxTris);
+	mesh.areas = (unsigned int*)alloc->alloc(sizeof(unsigned int)*maxTris);
 	if (!mesh.areas)
 		return DT_FAILURE | DT_OUT_OF_MEMORY;
-
-	mesh.flags = (unsigned short*)alloc->alloc(sizeof(unsigned short)*maxTris);
-	if (!mesh.flags)
-		return DT_FAILURE | DT_OUT_OF_MEMORY;
-
-	// Just allocate and clean the mesh flags array. The user is resposible for filling it.
-	memset(mesh.flags, 0, sizeof(unsigned short) * maxTris);
+	
 		
 	mesh.nverts = 0;
 	mesh.npolys = 0;
 	
 	memset(mesh.verts, 0, sizeof(unsigned short)*maxVertices*3);
 	memset(mesh.polys, 0xff, sizeof(unsigned short)*maxTris*MAX_VERTS_PER_POLY*2);
-	memset(mesh.areas, 0, sizeof(unsigned char)*maxTris);
+	memset(mesh.areas, 0, sizeof(unsigned int)*maxTris);
 	
 	unsigned short firstVert[VERTEX_BUCKET_COUNT2];
 	for (int i = 0; i < VERTEX_BUCKET_COUNT2; ++i)
@@ -2006,7 +1999,7 @@ dtStatus dtMarkCylinderArea(dtTileCacheLayer& layer, const float* orig, const fl
 dtStatus dtBuildTileCacheLayer(dtTileCacheCompressor* comp,
 							   dtTileCacheLayerHeader* header,
 							   const unsigned char* heights,
-							   const unsigned char* areas,
+							   const unsigned int* areas,
 							   const unsigned char* cons,
 							   unsigned char** outData, int* outDataSize)
 {
@@ -2027,7 +2020,7 @@ dtStatus dtBuildTileCacheLayer(dtTileCacheCompressor* comp,
 	if (!buffer)
 		return DT_FAILURE | DT_OUT_OF_MEMORY;
 	memcpy(buffer, heights, gridSize);
-	memcpy(buffer+gridSize, areas, gridSize);
+	memcpy(buffer+gridSize, areas, gridSize*sizeof(int));
 	memcpy(buffer+gridSize*2, cons, gridSize);
 	
 	// Compress

@@ -491,13 +491,13 @@ bool rcBuildHeightfieldLayers(rcContext* ctx, rcCompactHeightfield& chf,
 		}
 		memset(layer->heights, 0xff, gridSize);
 
-		layer->areas = (unsigned char*)rcAlloc(gridSize, RC_ALLOC_PERM);
+		layer->areas = (AreaType*)rcAlloc(gridSize*sizeof(AreaType), RC_ALLOC_PERM);
 		if (!layer->areas)
 		{
 			ctx->log(RC_LOG_ERROR, "rcBuildHeightfieldLayers: Out of memory 'areas' (%d).", gridSize);
 			return false;
 		}
-		memset(layer->areas, 0, gridSize);
+		memset(layer->areas, 0, gridSize*sizeof(AreaType));
 
 		layer->cons = (unsigned char*)rcAlloc(gridSize, RC_ALLOC_PERM);
 		if (!layer->cons)

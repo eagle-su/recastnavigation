@@ -46,7 +46,7 @@ static void calculateDistanceField(rcCompactHeightfield& chf, unsigned short* sr
 			for (int i = (int)c.index, ni = (int)(c.index+c.count); i < ni; ++i)
 			{
 				const rcCompactSpan& s = chf.spans[i];
-				const unsigned char area = chf.areas[i];
+				const AreaType area = chf.areas[i];
 				
 				int nc = 0;
 				for (int dir = 0; dir < 4; ++dir)
@@ -249,7 +249,7 @@ static bool floodRegion(int x, int y, int i,
 {
 	const int w = chf.width;
 	
-	const unsigned char area = chf.areas[i];
+	const AreaType area = chf.areas[i];
 	
 	// Flood fill mark region.
 	stack.resize(0);
@@ -406,7 +406,7 @@ static unsigned short* expandRegions(int maxIter, unsigned short level,
 			
 			unsigned short r = srcReg[i];
 			unsigned short d2 = 0xffff;
-			const unsigned char area = chf.areas[i];
+			const AreaType area = chf.areas[i];
 			const rcCompactSpan& s = chf.spans[i];
 			for (int dir = 0; dir < 4; ++dir)
 			{
@@ -526,7 +526,7 @@ struct rcRegion
 	
 	int spanCount;					// Number of spans belonging to this region
 	unsigned short id;				// ID of the region
-	unsigned char areaType;			// Are type.
+	AreaType areaType;			// Are type.
 	bool remap;
 	bool visited;
 	bool overlap;

@@ -396,13 +396,13 @@ bool duReadCompactHeightfield(struct rcCompactHeightfield& chf, duFileIO* io)
 	}
 	if (tmp & 8)
 	{
-		chf.areas = (unsigned char*)rcAlloc(sizeof(unsigned char)*chf.spanCount, RC_ALLOC_PERM);
+		chf.areas = (unsigned int*)rcAlloc(sizeof(unsigned int)*chf.spanCount, RC_ALLOC_PERM);
 		if (!chf.areas)
 		{
 			printf("duReadCompactHeightfield: Could not alloc areas (%d)\n", chf.spanCount);
 			return false;
 		}
-		io->read(chf.areas, sizeof(unsigned char)*chf.spanCount);
+		io->read(chf.areas, sizeof(unsigned int)*chf.spanCount);
 	}
 	
 	return true;

@@ -71,8 +71,7 @@ struct dtTileCachePolyMesh
 	int npolys;				///< Number of polygons.
 	unsigned short* verts;	///< Vertices of the mesh, 3 elements per vertex.
 	unsigned short* polys;	///< Polygons of the mesh, nvp*2 elements per polygon.
-	unsigned short* flags;	///< Per polygon flags.
-	unsigned char* areas;	///< Area ID of polygons.
+	unsigned int* areas;	///< Area ID of polygons.
 };
 
 
@@ -108,7 +107,7 @@ struct dtTileCacheCompressor
 dtStatus dtBuildTileCacheLayer(dtTileCacheCompressor* comp,
 							   dtTileCacheLayerHeader* header,
 							   const unsigned char* heights,
-							   const unsigned char* areas,
+							   const unsigned int* areas,
 							   const unsigned char* cons,
 							   unsigned char** outData, int* outDataSize);
 

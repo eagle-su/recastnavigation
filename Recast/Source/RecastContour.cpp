@@ -34,7 +34,7 @@ static int getCornerHeight(int x, int y, int i, int dir,
 	int ch = (int)s.y;
 	int dirp = (dir+1) & 0x3;
 	
-	unsigned int regs[4] = {0,0,0,0};
+	Uint64 regs[4] = {0,0,0,0};
 	
 	// Combine region and area codes in order to prevent
 	// border vertices which are in between two areas to be removed.
@@ -113,7 +113,7 @@ static void walkContour(int x, int y, int i,
 	unsigned char startDir = dir;
 	int starti = i;
 	
-	const unsigned char area = chf.areas[i];
+	const AreaType area = chf.areas[i];
 	
 	int iter = 0;
 	while (++iter < 40000)
@@ -919,7 +919,7 @@ bool rcBuildContours(rcContext* ctx, rcCompactHeightfield& chf,
 				const unsigned short reg = chf.spans[i].reg;
 				if (!reg || (reg & RC_BORDER_REG))
 					continue;
-				const unsigned char area = chf.areas[i];
+				const AreaType area = chf.areas[i];
 				
 				verts.resize(0);
 				simplified.resize(0);

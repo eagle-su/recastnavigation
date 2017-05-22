@@ -34,8 +34,7 @@ struct dtNavMeshCreateParams
 	const unsigned short* verts;			///< The polygon mesh vertices. [(x, y, z) * #vertCount] [Unit: vx]
 	int vertCount;							///< The number vertices in the polygon mesh. [Limit: >= 3]
 	const unsigned short* polys;			///< The polygon data. [Size: #polyCount * 2 * #nvp]
-	const unsigned short* polyFlags;		///< The user defined flags assigned to each polygon. [Size: #polyCount]
-	const unsigned char* polyAreas;			///< The user defined area ids assigned to each polygon. [Size: #polyCount]
+	const unsigned int* polyAreas;			///< The user defined area ids assigned to each polygon. [Size: #polyCount]
 	int polyCount;							///< Number of polygons in the mesh. [Limit: >= 1]
 	int nvp;								///< Number maximum number of vertices per polygon. [Limit: >= 3]
 

@@ -490,8 +490,8 @@ bool dtCreateNavMeshData(dtNavMeshCreateParams* params, unsigned char** outData,
 	{
 		dtPoly* p = &navPolys[i];
 		p->vertCount = 0;
-		p->flags = params->polyFlags[i];
-		p->setArea(params->polyAreas[i]);
+		p->flags = 1;// (params->polyAreas[i] >> 8) & 0xffff;
+		p->setArea(params->polyAreas[i]&0xff);
 		p->setType(DT_POLYTYPE_GROUND);
 		for (int j = 0; j < nvp; ++j)
 		{
