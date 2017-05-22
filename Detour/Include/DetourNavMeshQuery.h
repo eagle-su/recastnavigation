@@ -37,6 +37,8 @@ class dtQueryFilter
 	float m_areaCost[DT_MAX_AREAS];		///< Cost per area type. (Used by default implementation.)
 	unsigned short m_includeFlags;		///< Flags for polygons that can be visited. (Used by default implementation.)
 	unsigned short m_excludeFlags;		///< Flags for polygons that should not be visted. (Used by default implementation.)
+
+	unsigned char mFlagPassBits[1024 * 8];//8KB = 65536bit
 	
 public:
 	dtQueryFilter();
@@ -117,6 +119,21 @@ public:
 
 	///@}
 
+	inline void SetFlagsPassBit(const unsigned short flags, bool pass)
+	{
+		unsigned int bytePos = flags >> 3;
+		unsigned char bitPos = flags & 0x7;
+		unsigned char& passByte = mFlagPassBits[bytePos];
+		passByte = pass ? (passByte|(1<< bitPos)) : (passByte & ~(1 << bitPos));
+	}
+	
+	inline bool GetFlagsPass(const unsigned short flags) const
+	{
+		unsigned int bytePos = flags >> 3;
+		unsigned char bitPos = flags & 0x7;
+		const unsigned char& passByte = mFlagPassBits[bytePos];
+		return !!(passByte & (1 << bitPos));
+	}
 };
 
 

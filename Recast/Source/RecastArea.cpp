@@ -313,7 +313,7 @@ bool rcMedianFilterWalkableArea(rcContext* ctx, rcCompactHeightfield& chf)
 /// The value of spacial parameters are in world units.
 /// 
 /// @see rcCompactHeightfield, rcMedianFilterWalkableArea
-void rcMarkBoxArea(rcContext* ctx, const float* bmin, const float* bmax, unsigned char areaId,
+void rcMarkBoxArea(rcContext* ctx, const float* bmin, const float* bmax, AreaType areaId,
 				   rcCompactHeightfield& chf)
 {
 	rcAssert(ctx);
@@ -379,7 +379,7 @@ static int pointInPoly(int nvert, const float* verts, const float* p)
 /// 
 /// @see rcCompactHeightfield, rcMedianFilterWalkableArea
 void rcMarkConvexPolyArea(rcContext* ctx, const float* verts, const int nverts,
-						  const float hmin, const float hmax, unsigned char areaId,
+						  const float hmin, const float hmax, AreaType areaId,
 						  rcCompactHeightfield& chf)
 {
 	rcAssert(ctx);
@@ -527,7 +527,7 @@ int rcOffsetPoly(const float* verts, const int nverts, const float offset,
 /// 
 /// @see rcCompactHeightfield, rcMedianFilterWalkableArea
 void rcMarkCylinderArea(rcContext* ctx, const float* pos,
-						const float r, const float h, unsigned char areaId,
+						const float r, const float h, AreaType areaId,
 						rcCompactHeightfield& chf)
 {
 	rcAssert(ctx);

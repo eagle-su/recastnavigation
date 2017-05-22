@@ -66,6 +66,8 @@ dtQueryFilter::dtQueryFilter() :
 {
 	for (int i = 0; i < DT_MAX_AREAS; ++i)
 		m_areaCost[i] = 1.0f;
+	memset(mFlagPassBits, 0x0, sizeof(mFlagPassBits));
+	SetFlagsPassBit(3, true);
 }
 
 #ifdef DT_VIRTUAL_QUERYFILTER
@@ -73,7 +75,7 @@ bool dtQueryFilter::passFilter(const dtPolyRef /*ref*/,
 							   const dtMeshTile* /*tile*/,
 							   const dtPoly* poly) const
 {
-	return (poly->flags & m_includeFlags) != 0 && (poly->flags & m_excludeFlags) == 0;
+	return (poly->flags == 0) || GetFlagsPass(poly->flags);
 }
 
 float dtQueryFilter::getCost(const float* pa, const float* pb,
@@ -88,7 +90,7 @@ inline bool dtQueryFilter::passFilter(const dtPolyRef /*ref*/,
 									  const dtMeshTile* /*tile*/,
 									  const dtPoly* poly) const
 {
-	return (poly->flags & m_includeFlags) != 0 && (poly->flags & m_excludeFlags) == 0;
+	return (poly->flags == 0) || GetFlagsPass(poly->flags);
 }
 
 inline float dtQueryFilter::getCost(const float* pa, const float* pb,

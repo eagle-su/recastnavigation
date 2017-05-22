@@ -1061,7 +1061,7 @@ bool rcBuildPolyMesh(rcContext* ctx, rcContourSet& cset, const int nvp, rcPolyMe
 	memset(mesh.verts, 0, sizeof(unsigned short)*maxVertices*3);
 	memset(mesh.polys, 0xff, sizeof(unsigned short)*maxTris*nvp*2);
 	memset(mesh.regs, 0, sizeof(unsigned short)*maxTris);
-	memset(mesh.areas, 0, sizeof(unsigned char)*maxTris);
+	memset(mesh.areas, 0, sizeof(AreaType)*maxTris);
 	
 	rcScopedDelete<int> nextVert((int*)rcAlloc(sizeof(int)*maxVertices, RC_ALLOC_TEMP));
 	if (!nextVert)
@@ -1520,7 +1520,7 @@ bool rcCopyPolyMesh(rcContext* ctx, const rcPolyMesh& src, rcPolyMesh& dst)
 		ctx->log(RC_LOG_ERROR, "rcCopyPolyMesh: Out of memory 'dst.areas' (%d).", src.npolys);
 		return false;
 	}
-	memcpy(dst.areas, src.areas, sizeof(unsigned char)*src.npolys);	
+	memcpy(dst.areas, src.areas, sizeof(AreaType)*src.npolys);	
 	
 	return true;
 }
